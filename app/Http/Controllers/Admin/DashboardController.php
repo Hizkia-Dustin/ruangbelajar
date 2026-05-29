@@ -14,13 +14,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Statistik ringkasan pendaftaran
         $stats = [
-            'total_pendaftar'  => Registration::count(),
-            'pending'          => Registration::where('status', 'pending')->count(),
-            'contacted'        => Registration::where('status', 'contacted')->count(),
-            'trial'            => Registration::where('status', 'trial')->count(),
-            'accepted'         => Registration::where('status', 'accepted')->count(),
+            'total_pendaftar' => Registration::count(),
+            'need_contact'    => Registration::where('status', 'need_contact')->count(),
+            'contacted'       => Registration::where('status', 'contacted')->count(),
+            'rejected'        => Registration::where('status', 'rejected')->count(),
         ];
 
         // 5 pendaftar terbaru

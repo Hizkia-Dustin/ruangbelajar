@@ -13,7 +13,7 @@ class Registration extends Model
     protected $fillable = [
         'student_name', 'age', 'class_name', 'school',
         'parent_name', 'whatsapp', 'email',
-        'program_id', 'selected_program',
+        'program_id', 'program_name', 'selected_program',
         'notes', 'status', 'source',
         'contacted_at', 'admin_notes',
     ];
@@ -23,28 +23,22 @@ class Registration extends Model
     ];
 
     public const STATUSES = [
-        'pending'   => 'Menunggu',
-        'contacted' => 'Sudah Dihubungi',
-        'trial'     => 'Trial Kelas',
-        'accepted'  => 'Diterima',
-        'rejected'  => 'Tidak Dilanjutkan',
+        'need_contact' => 'Perlu Dihubungi',
+        'contacted'    => 'Sudah Dihubungi',
+        'rejected'     => 'Tidak Lanjut',
     ];
 
     public const STATUS_COLORS = [
-        'pending'   => 'warning',
-        'contacted' => 'info',
-        'trial'     => 'primary',
-        'accepted'  => 'success',
-        'rejected'  => 'danger',
+        'need_contact' => 'warning',
+        'contacted'    => 'success',
+        'rejected'     => 'danger',
     ];
 
     /** Tailwind badge classes per status */
     public const STATUS_BADGES = [
-        'pending'   => 'bg-yellow-100 text-yellow-700 border-yellow-200',
-        'contacted' => 'bg-sky-100 text-sky-700 border-sky-200',
-        'trial'     => 'bg-purple-100 text-purple-700 border-purple-200',
-        'accepted'  => 'bg-green-100 text-green-700 border-green-200',
-        'rejected'  => 'bg-red-100 text-red-700 border-red-200',
+        'need_contact' => 'bg-amber-100 text-amber-700 border-amber-200',
+        'contacted'    => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+        'rejected'     => 'bg-red-100 text-red-700 border-red-200',
     ];
 
     // ---- Accessors ----
@@ -64,7 +58,7 @@ class Registration extends Model
     /** Program tampil: relasi program → text fallback */
     public function getDisplayProgramAttribute(): string
     {
-        return $this->program?->display_title ?? $this->selected_program ?? '–';
+        return $this->program?->title ?? $this->program_name ?? $this->selected_program ?? '–';
     }
 
     /** Label status */

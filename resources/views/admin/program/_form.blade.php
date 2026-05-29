@@ -19,47 +19,25 @@
         </div>
     </div>
 
-    {{-- Row 2: Subtitle & Rentang Usia --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Subtitle</label>
-            <input type="text" name="subtitle" value="{{ old('subtitle', $program?->subtitle) }}"
-                   placeholder="Program paling diminati"
-                   class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
-        </div>
-        <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Rentang Usia</label>
-            <input type="text" name="age_range" value="{{ old('age_range', $program?->display_age_range) }}"
-                   placeholder="Usia 2–4 Tahun"
-                   class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
-        </div>
-    </div>
-
-    {{-- Row 3: Deskripsi Singkat --}}
+    {{-- Row 2: Rentang Usia --}}
     <div>
-        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Deskripsi Singkat <span class="text-gray-400 font-normal">(untuk card)</span></label>
-        <textarea name="short_description" rows="2"
-                  placeholder="Deskripsi pendek yang tampil di kartu program..."
-                  class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition resize-none">{{ old('short_description', $program?->short_description) }}</textarea>
+        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Rentang Usia <span class="text-gray-400 font-normal">(opsional)</span></label>
+        <input type="text" name="age_range" value="{{ old('age_range', $program?->display_age_range) }}"
+               placeholder="Usia 2–4 Tahun"
+               class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
     </div>
 
-    {{-- Row 4: Deskripsi Lengkap --}}
+    {{-- Row 3: Deskripsi Lengkap --}}
     <div>
         <label class="block text-xs font-semibold text-gray-600 mb-1.5">Deskripsi Lengkap <span class="text-red-400">*</span></label>
-        <textarea name="deskripsi" rows="4" required
+        <textarea name="description" rows="4" required
                   placeholder="Deskripsi lengkap program..."
-                  class="w-full px-3.5 py-2.5 border @error('deskripsi') border-red-400 bg-red-50 @else border-gray-200 @enderror rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition resize-none">{{ old('deskripsi', $program?->deskripsi) }}</textarea>
-        @error('deskripsi')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
+                  class="w-full px-3.5 py-2.5 border @error('description') border-red-400 bg-red-50 @else border-gray-200 @enderror rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition resize-none">{{ old('description', $program?->deskripsi ?? $program?->description) }}</textarea>
+        @error('description')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
     </div>
 
-    {{-- Row 5: Icon & Tombol CTA --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Icon Font Awesome</label>
-            <input type="text" name="icon" value="{{ old('icon', $program?->icon) }}"
-                   placeholder="fas fa-shapes"
-                   class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
-        </div>
+    {{-- Row 5: Tombol CTA --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label class="block text-xs font-semibold text-gray-600 mb-1.5">Teks Tombol</label>
             <input type="text" name="button_text" value="{{ old('button_text', $program?->button_text ?? 'Tanya Program Ini') }}"

@@ -39,8 +39,8 @@
         
         <!-- Illustration Content -->
         <div class="relative lg:block" data-aos="zoom-in" data-aos-delay="200">
-             <div class="relative z-10 w-full rounded-[5rem] overflow-hidden shadow-[0_50px_100px_rgba(30,58,138,0.5)] border-8 border-white/5 group transition-transform duration-1000 hover:scale-[1.02]">
-                <img src="{{ $homeSetting->hero_image ? asset('storage/'.$homeSetting->hero_image) : asset('images/hero.png') }}" alt="Education Hero" class="w-full h-auto object-cover transform scale-105 group-hover:scale-100 transition-transform duration-1000 saturate-[1.2]">
+             <div class="relative z-10 w-full aspect-[4/3] max-h-[550px] rounded-[5rem] overflow-hidden shadow-[0_50px_100px_rgba(30,58,138,0.5)] border-8 border-white/5 group transition-transform duration-1000 hover:scale-[1.02]">
+                <img src="{{ $homeSetting->hero_image ? asset('storage/'.$homeSetting->hero_image) : asset('images/hero.png') }}" alt="Education Hero" class="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-1000 saturate-[1.2]">
                 <div class="absolute inset-0 bg-gradient-to-t from-brand-deepBlue/80 via-transparent to-transparent"></div>
                 <div class="absolute bottom-16 left-16 p-8 bg-white/10 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] max-w-xs transform group-hover:-translate-y-4 transition-transform duration-700">
                     <p class="font-black text-2xl italic tracking-tight mb-2">#EduInnovation</p>
@@ -82,13 +82,25 @@
     </div>
 </section>
 
+@php
+    $displaySolSmallLabel = $solutionSetting->small_label ?? 'THE SOLUTION';
+    $displaySolTitle1 = $solutionSetting->title_line_1 ?? 'Ubah';
+    $displaySolTitleHighlight = $solutionSetting->title_highlight ?? 'Kebingungan';
+    $displaySolTitle2 = $solutionSetting->title_line_2 ?? 'Menjadi';
+    $displaySolTitleYellow = $solutionSetting->title_yellow ?? 'Kepercayaan Diri.';
+    $displaySolDesc = $solutionSetting->description ?? 'Banyak siswa terjebak dalam metode hafalan yang membosankan. Ruang Belajar hadir membongkar metode konvensional tersebut dengan cara yang jauh lebih interaktif dan bermakna.';
+    $displaySolImage = ($solutionSetting && $solutionSetting->image) ? asset('storage/'.$solutionSetting->image) : asset('images/solution.png');
+    $displaySolActive = $solutionSetting ? $solutionSetting->is_active : true;
+@endphp
+
+@if($displaySolActive)
 <!-- Problem & Solution Section -->
 <section class="py-40 bg-white px-6 overflow-hidden">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-24 items-center">
         <!-- Visual Comparison -->
         <div class="lg:w-1/2 relative" data-aos="fade-right">
-            <div class="relative z-10 w-full rounded-[5rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] border-8 border-slate-50 group">
-                <img src="{{ asset('images/solution.png') }}" alt="Solution Comparison" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-1000">
+            <div class="relative z-10 w-full aspect-[4/3] max-h-[500px] rounded-[5rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] border-8 border-slate-50 group">
+                <img src="{{ $displaySolImage }}" alt="Solution Comparison" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000">
                 <div class="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition-all duration-700"></div>
             </div>
             <!-- Labels -->
@@ -104,33 +116,43 @@
         
         <!-- Text Content -->
         <div class="lg:w-1/2" data-aos="fade-left">
-            <span class="text-brand-blue font-black tracking-[0.4em] uppercase text-xs mb-8 block italic underline decoration-blue-100 underline-offset-8">The Solution</span>
-            <h2 class="text-5xl md:text-7xl font-black text-brand-dark mb-12 tracking-tighter italic uppercase leading-[1.05]">Ubah <span class="text-brand-blue">Kebingungan</span> Menjadi <span class="bg-secondary px-4 rounded-2xl">Kepercayaan Diri.</span></h2>
+            <span class="text-brand-blue font-black tracking-[0.4em] uppercase text-xs mb-8 block italic underline decoration-blue-100 underline-offset-8">{{ $displaySolSmallLabel }}</span>
+            <h2 class="text-5xl md:text-7xl font-black text-brand-dark mb-12 tracking-tighter italic uppercase leading-[1.05]">{{ $displaySolTitle1 }} <span class="text-brand-blue">{{ $displaySolTitleHighlight }}</span> {{ $displaySolTitle2 }} <span class="bg-secondary px-4 rounded-2xl">{{ $displaySolTitleYellow }}</span></h2>
             <p class="text-xl text-slate-500 font-medium leading-[2] mb-16 italic opacity-80">
-                Banyak siswa terjebak dalam metode hafalan yang membosankan. Ruang Belajar hadir membongkar metode konvensional tersebut dengan cara yang jauh lebih interaktif dan bermakna.
+                {{ $displaySolDesc }}
             </p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
-                <div class="flex gap-6 items-start">
-                    <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
-                    <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Tutor Asyik & Sabar</p>
-                </div>
-                 <div class="flex gap-6 items-start">
-                    <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
-                    <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Materi Per Jenjang</p>
-                </div>
-                 <div class="flex gap-6 items-start">
-                    <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
-                    <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Kuis Interaktif</p>
-                </div>
-                 <div class="flex gap-6 items-start">
-                    <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
-                    <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Progress Report</p>
-                </div>
+                @if(isset($solutionPoints) && $solutionPoints->isNotEmpty())
+                    @foreach($solutionPoints as $point)
+                    <div class="flex gap-6 items-start">
+                        <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
+                        <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">{{ $point->title }}</p>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="flex gap-6 items-start">
+                        <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
+                        <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Tutor Asyik & Sabar</p>
+                    </div>
+                     <div class="flex gap-6 items-start">
+                        <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
+                        <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Materi Per Jenjang</p>
+                    </div>
+                     <div class="flex gap-6 items-start">
+                        <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
+                        <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Kuis Interaktif</p>
+                    </div>
+                     <div class="flex gap-6 items-start">
+                        <div class="w-10 h-10 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center shrink-0 mt-1 shadow-sm"><i class="fas fa-check"></i></div>
+                        <p class="text-slate-800 font-black text-sm uppercase italic tracking-wide">Progress Report</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 </section>
+@endif
 
 <!-- Keunggulan Section (Dark) -->
 <section class="py-40 bg-brand-dark text-white px-6 overflow-hidden relative">
@@ -147,7 +169,7 @@
             @forelse($keunggulans as $i => $item)
             <div class="bg-white/5 border border-white/5 p-16 rounded-[4.5rem] hover:bg-white/10 transition-all duration-700 group hover:-translate-y-4 hover:shadow-2xl hover:shadow-blue-500/10" data-aos="fade-up" data-aos-delay="{{ ($i + 1) * 100 }}">
                 <div class="w-24 h-24 bg-white/10 text-secondary rounded-[3rem] flex items-center justify-center text-4xl mx-auto mb-12 shadow-2xl group-hover:bg-secondary group-hover:text-brand-dark transition-all duration-500 transform group-hover:rotate-12">
-                    <i class="{{ $item->icon ?? 'fas fa-star' }}"></i>
+                    <i class="{{ $item->display_icon }}"></i>
                 </div>
                 <h3 class="text-3xl font-black mb-6 italic tracking-tight uppercase">{{ $item->title }}</h3>
                 <p class="text-blue-100/60 font-medium text-sm leading-relaxed italic">{{ $item->description }}</p>
@@ -192,51 +214,29 @@
         </div>
         
         <div class="grid grid-cols-1 gap-12" data-aos="fade-left">
-            <!-- Program 1 -->
-            <div class="bg-white p-12 rounded-[4rem] group hover:bg-brand-blue transition-all duration-700 shadow-2xl shadow-blue-900/5 relative overflow-hidden cursor-pointer">
+            @forelse($homeProgramCards as $card)
+            <div onclick="window.location.href='{{ url('/program') }}'"
+                 class="bg-white p-12 rounded-[4rem] group hover:bg-brand-blue transition-all duration-700 shadow-2xl shadow-blue-900/5 relative overflow-hidden cursor-pointer">
                 <div class="absolute inset-0 bg-blue-600/10 translate-y-full group-hover:translate-y-0 transition-transform duration-700"></div>
                 <div class="relative z-10 flex flex-col sm:flex-row items-center gap-10">
                     <div class="w-24 h-24 bg-brand-light text-brand-blue rounded-[2.5rem] flex items-center justify-center shrink-0 group-hover:bg-white group-hover:rotate-12 transition-all duration-500 text-3xl shadow-inner">
-                        <i class="fas fa-shapes"></i>
+                        <i class="{{ $card->display_icon }}"></i>
                     </div>
                     <div>
-                         <div class="inline-block bg-yellow-400 text-brand-dark text-[8px] uppercase font-black tracking-widest px-3 py-1 rounded-full mb-4 group-hover:bg-white">Special</div>
-                         <h3 class="text-4xl font-black text-brand-dark italic tracking-tight uppercase group-hover:text-white transition-colors duration-500 leading-none">Pra-Sekolah</h3>
-                         <p class="text-slate-400 font-medium text-sm mt-4 italic group-hover:text-blue-100 transition-colors duration-500">Mempersiapkan motorik & sosialisasi dini.</p>
+                         @if($card->badge)
+                             <div class="inline-block bg-yellow-400 text-brand-dark text-[8px] uppercase font-black tracking-widest px-3 py-1 rounded-full mb-4 group-hover:bg-white">{{ $card->badge }}</div>
+                         @endif
+                         <h3 class="text-4xl font-black text-brand-dark italic tracking-tight uppercase group-hover:text-white transition-colors duration-500 leading-none">{{ $card->title }}</h3>
+                         <p class="text-slate-400 font-medium text-sm mt-4 italic group-hover:text-blue-100 transition-colors duration-500">{{ $card->description }}</p>
                     </div>
                     <div class="sm:ml-auto group-hover:translate-x-4 transition-transform duration-500">
                         <i class="fas fa-arrow-right text-brand-blue group-hover:text-white text-2xl"></i>
                     </div>
                 </div>
             </div>
-            <!-- Program 2 -->
-             <div class="bg-white p-12 rounded-[4rem] group hover:bg-brand-blue transition-all duration-700 shadow-2xl shadow-blue-900/5 relative overflow-hidden cursor-pointer">
-                 <div class="absolute inset-x-0 bottom-0 top-0 left-0 bg-secondary/80 w-1 group-hover:w-full transition-all duration-700 -z-10 group-hover:z-0 opacity-0 group-hover:opacity-100"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-center gap-10">
-                    <div class="w-24 h-24 bg-brand-light text-brand-blue rounded-[2.5rem] flex items-center justify-center shrink-0 group-hover:bg-white group-hover:scale-110 transition-all duration-500 text-3xl shadow-inner uppercase font-black italic">TK</div>
-                    <div>
-                         <div class="inline-block bg-brand-dark text-white text-[8px] uppercase font-black tracking-widest px-3 py-1 rounded-full mb-4 group-hover:bg-brand-dark/20">Populer</div>
-                         <h3 class="text-4xl font-black text-brand-dark italic tracking-tight uppercase group-hover:text-white transition-colors duration-500 leading-none">Jenjang TK</h3>
-                         <p class="text-slate-400 font-medium text-sm mt-4 italic group-hover:text-blue-100 transition-colors duration-500">Calistung asik untuk persiapan Sekolah Dasar.</p>
-                    </div>
-                    <div class="sm:ml-auto group-hover:translate-x-4 transition-transform duration-500">
-                        <i class="fas fa-arrow-right text-brand-blue group-hover:text-white text-2xl"></i>
-                    </div>
-                </div>
-            </div>
-            <!-- Program 3 -->
-             <div class="bg-white p-12 rounded-[4rem] group hover:bg-brand-blue transition-all duration-700 shadow-2xl shadow-blue-900/5 relative overflow-hidden cursor-pointer">
-                <div class="relative z-10 flex flex-col sm:flex-row items-center gap-10">
-                    <div class="w-24 h-24 bg-brand-light text-brand-blue rounded-[2.5rem] flex items-center justify-center shrink-0 group-hover:bg-white group-hover:-rotate-12 transition-all duration-500 text-3xl shadow-inner font-black uppercase italic">SD</div>
-                    <div>
-                         <h3 class="text-4xl font-black text-brand-dark italic tracking-tight uppercase group-hover:text-white transition-colors duration-500 leading-none">Jenjang SD</h3>
-                         <p class="text-slate-400 font-medium text-sm mt-4 italic group-hover:text-blue-100 transition-colors duration-500">Pendampingan akademik intensif per mata pelajaran.</p>
-                    </div>
-                    <div class="sm:ml-auto group-hover:translate-x-4 transition-transform duration-500">
-                        <i class="fas fa-arrow-right text-brand-blue group-hover:text-white text-2xl"></i>
-                    </div>
-                </div>
-            </div>
+            @empty
+            <div class="text-center text-slate-400 py-8">Belum ada card program.</div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -250,40 +250,58 @@
             <h2 class="text-5xl md:text-7xl font-black text-brand-dark tracking-tighter italic uppercase leading-[1]">Apa Kata Orang Tua?</h2>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12" data-aos="fade-up">
-            <!-- Testimoni Card 1 -->
-            <div class="bg-brand-deepBlue p-12 md:p-16 rounded-[4rem] text-white shadow-2xl shadow-blue-900/20 relative group overflow-hidden">
-                <div class="absolute top-10 right-10 opacity-5 text-8xl group-hover:rotate-12 transition-transform duration-700"><i class="fas fa-quote-right"></i></div>
-                <div class="flex gap-2 text-secondary mb-8">
-                     <i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i>
-                </div>
-                <p class="text-xl font-bold italic mb-12 leading-relaxed opacity-90 relative z-10">"Anak saya menjadi jauh lebih disiplin dalam belajar. Kenaikan nilai di sekolah terlihat sangat nyata hanya dalam 3 bulan."</p>
-                <div class="flex items-center gap-6 relative z-10 border-t border-white/10 pt-10">
-                    <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-xl text-secondary border border-white/5">
-                        <i class="fas fa-user"></i>
+        <div class="relative group/slider max-w-7xl mx-auto px-4" data-aos="fade-up" id="home-testimonial-slider">
+            <!-- Carousel Container -->
+            <div class="overflow-hidden py-8">
+                <div class="flex transition-transform duration-500 ease-out" id="testimonial-track">
+                    @forelse($testimonials as $item)
+                    <div class="w-full md:w-1/2 lg:w-1/4 shrink-0 px-4">
+                        <div class="bg-brand-deepBlue p-8 md:p-10 lg:p-6 xl:p-8 rounded-[3rem] text-white shadow-2xl shadow-blue-900/20 relative group overflow-hidden flex flex-col justify-between h-full min-h-[380px] lg:min-h-[420px]">
+                            <div class="absolute top-10 right-10 opacity-5 text-8xl group-hover:rotate-12 transition-transform duration-700 pointer-events-none"><i class="fas fa-quote-right"></i></div>
+                            <div>
+                                <div class="flex gap-2 text-secondary mb-8">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $item->rating)
+                                            <i class="fas fa-star text-sm"></i>
+                                        @else
+                                            <i class="far fa-star text-sm opacity-35"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <p class="text-lg font-bold italic mb-8 leading-relaxed opacity-90 relative z-10">"{{ $item->testimonial }}"</p>
+                            </div>
+                            <div class="flex items-center gap-4 relative z-10 border-t border-white/10 pt-6 mt-auto">
+                                <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/5 flex items-center justify-center text-lg text-secondary overflow-hidden shrink-0">
+                                    @if($item->photo)
+                                        <img src="{{ asset('storage/' . $item->photo) }}" class="w-full h-full object-cover" alt="{{ $item->name }}">
+                                    @else
+                                        <i class="fas fa-user"></i>
+                                    @endif
+                                </div>
+                                <div>
+                                    <p class="font-black text-white italic text-base uppercase tracking-tight">{{ $item->name }}</p>
+                                    <p class="text-[9px] text-blue-300 font-bold uppercase tracking-widest italic opacity-60">{{ $item->role }}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p class="font-black text-white italic text-lg uppercase tracking-tight">Ibu Maya</p>
-                        <p class="text-[10px] text-blue-300 font-bold uppercase tracking-widest italic opacity-60">Wali Murid - SD Tajur</p>
-                    </div>
+                    @empty
+                    <div class="w-full text-center text-slate-400 py-8">Belum ada testimoni yang ditampilkan.</div>
+                    @endforelse
                 </div>
             </div>
-            <!-- Testimoni Card 2 -->
-             <div class="bg-brand-deepBlue p-12 md:p-16 rounded-[4rem] text-white shadow-2xl shadow-blue-900/20 relative group overflow-hidden">
-                <div class="absolute top-10 right-10 opacity-5 text-8xl group-hover:-rotate-12 transition-transform duration-700"><i class="fas fa-quote-right"></i></div>
-                <div class="flex gap-2 text-secondary mb-8">
-                     <i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i><i class="fas fa-star text-sm"></i>
-                </div>
-                <p class="text-xl font-bold italic mb-12 leading-relaxed opacity-90 relative z-10">"Tutor di Ruang Belajar benar-benar tahu cara menghandle semangat anak yang sedang turun. Sangat personal dan sabar!"</p>
-                <div class="flex items-center gap-6 relative z-10 border-t border-white/10 pt-10">
-                    <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-xl text-secondary border border-white/5">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div>
-                        <p class="font-black text-white italic text-lg uppercase tracking-tight">Pak Rudi</p>
-                        <p class="text-[10px] text-blue-300 font-bold uppercase tracking-widest italic opacity-60">Wali Murid - TK Pakuan</p>
-                    </div>
-                </div>
+
+            <!-- Navigation Arrows -->
+            <button id="btn-prev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-8 w-14 h-14 bg-white text-brand-deepBlue border border-blue-100 rounded-full flex items-center justify-center shadow-xl hover:bg-brand-blue hover:text-white transition-all active:scale-95 z-30">
+                <i class="fas fa-chevron-left text-base"></i>
+            </button>
+            <button id="btn-next" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-8 w-14 h-14 bg-white text-brand-deepBlue border border-blue-100 rounded-full flex items-center justify-center shadow-xl hover:bg-brand-blue hover:text-white transition-all active:scale-95 z-30">
+                <i class="fas fa-chevron-right text-base"></i>
+            </button>
+
+            <!-- Dots Indicator -->
+            <div class="flex justify-center gap-3 mt-10" id="slider-dots">
+                <!-- Dots will be populated by JS -->
             </div>
         </div>
     </div>
@@ -356,6 +374,151 @@
     }
     
     document.addEventListener('DOMContentLoaded', initCountUp);
+
+    // Testimonial Slider Logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('home-testimonial-slider');
+        if (!slider) return;
+
+        const track = slider.querySelector('#testimonial-track');
+        const slides = track.children;
+        const btnPrev = slider.querySelector('#btn-prev');
+        const btnNext = slider.querySelector('#btn-next');
+        const dotsContainer = slider.querySelector('#slider-dots');
+
+        let currentIndex = 0;
+        let slidesToShow = window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1);
+        let maxIndex = Math.max(0, slides.length - slidesToShow);
+
+        function updateSlider() {
+            slidesToShow = window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1);
+            maxIndex = Math.max(0, slides.length - slidesToShow);
+
+            // Sembunyikan navigasi jika jumlah slide <= jumlah yang ditampilkan
+            if (slides.length <= slidesToShow) {
+                btnPrev.classList.add('hidden');
+                btnNext.classList.add('hidden');
+                dotsContainer.classList.add('hidden');
+            } else {
+                btnPrev.classList.remove('hidden');
+                btnNext.classList.remove('hidden');
+                dotsContainer.classList.remove('hidden');
+            }
+
+            if (currentIndex > maxIndex) {
+                currentIndex = maxIndex;
+            }
+
+            // Translate track
+            const translateValue = currentIndex * (100 / slidesToShow);
+            track.style.transform = `translateX(-${translateValue}%)`;
+
+            // Update Dots active state
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                if (dots[i]) {
+                    if (i === currentIndex) {
+                        dots[i].classList.add('bg-brand-blue', 'w-8');
+                        dots[i].classList.remove('bg-blue-200', 'w-3');
+                    } else {
+                        dots[i].classList.remove('bg-brand-blue', 'w-8');
+                        dots[i].classList.add('bg-blue-200', 'w-3');
+                    }
+                }
+            }
+
+            // Disable buttons if at boundaries
+            btnPrev.disabled = currentIndex === 0;
+            btnPrev.style.opacity = currentIndex === 0 ? '0.5' : '1';
+            btnPrev.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
+
+            btnNext.disabled = currentIndex === maxIndex;
+            btnNext.style.opacity = currentIndex === maxIndex ? '0.5' : '1';
+            btnNext.style.pointerEvents = currentIndex === maxIndex ? 'none' : 'auto';
+        }
+
+        function createDots() {
+            dotsContainer.innerHTML = '';
+            slidesToShow = window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1);
+            maxIndex = Math.max(0, slides.length - slidesToShow);
+            
+            // Hanya buat dots jika jumlah slide > yang ditampilkan
+            if (slides.length > slidesToShow) {
+                for (let i = 0; i <= maxIndex; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'h-3 rounded-full transition-all duration-300 bg-blue-200 focus:outline-none';
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateSlider();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+        }
+
+        // Event listeners
+        btnPrev.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSlider();
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateSlider();
+            }
+        });
+
+        // Handle touch/swipe gestures for mobile/tablet
+        let startX = 0;
+        let isSwiping = false;
+
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isSwiping = true;
+        });
+
+        track.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            const diffX = e.touches[0].clientX - startX;
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0 && currentIndex > 0) {
+                    currentIndex--;
+                    updateSlider();
+                    isSwiping = false;
+                } else if (diffX < 0 && currentIndex < maxIndex) {
+                    currentIndex++;
+                    updateSlider();
+                    isSwiping = false;
+                }
+            }
+        });
+
+        track.addEventListener('touchend', () => {
+            isSwiping = false;
+        });
+
+        // Resize handling
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const oldSlidesShow = slidesToShow;
+                slidesToShow = window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1);
+                if (oldSlidesShow !== slidesToShow) {
+                    createDots();
+                    updateSlider();
+                }
+            }, 100);
+        });
+
+        // Initial setup
+        createDots();
+        updateSlider();
+    });
 </script>
 
 <style>

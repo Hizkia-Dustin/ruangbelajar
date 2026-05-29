@@ -15,7 +15,7 @@ class AboutSettingRequest extends FormRequest
             'title'               => 'required|string|max:255',
             'highlighted_title'   => 'required|string|max:255',
             'description'         => 'required|string',
-            'hero_image'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'hero_image'          => 'nullable|image|mimes:jpg,jpeg,png,webp',
             'vision_title'        => 'required|string|max:255',
             'vision_description'  => 'required|string',
             'mission_title'       => 'required|string|max:255',
@@ -35,7 +35,6 @@ class AboutSettingRequest extends FormRequest
             'mission_description.required' => 'Deskripsi misi wajib diisi.',
             'hero_image.image'             => 'File harus berupa gambar.',
             'hero_image.mimes'             => 'Format gambar harus jpg, jpeg, png, atau webp.',
-            'hero_image.max'               => 'Ukuran gambar maksimal 2MB.',
         ];
     }
 }

@@ -14,20 +14,10 @@
         <form method="POST" action="{{ route('admin.beranda.keunggulan.update', $keunggulan) }}" class="p-6 space-y-4">
             @csrf @method('PUT')
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">Icon Font Awesome</label>
-                    <input type="text" name="icon" value="{{ old('icon', $keunggulan->icon) }}" placeholder="fas fa-star"
-                           class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
-                    @if($keunggulan->icon)
-                        <p class="text-xs text-gray-400 mt-1">Preview: <i class="{{ $keunggulan->icon }} text-brand-500"></i></p>
-                    @endif
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">Urutan</label>
-                    <input type="number" name="sort_order" value="{{ old('sort_order', $keunggulan->sort_order) }}" min="0"
-                           class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
-                </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Urutan</label>
+                <input type="number" name="sort_order" value="{{ old('sort_order', $keunggulan->sort_order) }}" min="0"
+                       class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
             </div>
 
             <div>

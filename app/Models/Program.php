@@ -32,10 +32,16 @@ class Program extends Model
         return $this->title ?: ($this->nama_program ?: '–');
     }
 
-    /** Deskripsi tampil: short_description → deskripsi */
+    /** Deskripsi tampil: deskripsi */
     public function getDisplayDescriptionAttribute(): string
     {
-        return $this->short_description ?: ($this->deskripsi ?: '');
+        return $this->deskripsi ?: '';
+    }
+
+    /** Accessor untuk description -> deskripsi */
+    public function getDescriptionAttribute(): string
+    {
+        return $this->deskripsi ?: '';
     }
 
     /** Gambar tampil: thumbnail → image */
@@ -54,6 +60,28 @@ class Program extends Model
     public function getDisplaySortOrderAttribute(): int
     {
         return $this->sort_order ?: $this->urutan;
+    }
+
+    /** Icon tampil: icon database jika ada -> icon otomatis bertema pendidikan */
+    public function getDisplayIconAttribute(): string
+    {
+        if (!empty($this->icon)) {
+            return $this->icon;
+        }
+
+        $icons = [
+            'fas fa-book-open',
+            'fas fa-graduation-cap',
+            'fas fa-pencil',
+            'fas fa-shapes',
+            'fas fa-brain',
+            'fas fa-lightbulb',
+            'fas fa-user-graduate',
+        ];
+
+        // Gunakan ID modulo count(icons) jika ID ada, fallback ke sort_order / 0
+        $basis = $this->id ?: ($this->sort_order ?: ($this->urutan ?: 0));
+        return $icons[$basis % count($icons)];
     }
 
     // ---- BOOT: Auto-generate slug ----
@@ -110,6 +138,10 @@ class Program extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true)
+            ->where(function($q) {
+                $q->whereNull('status')
+                  ->orWhere('status', 'active');
+            })
             ->orderByRaw('COALESCE(sort_order, urutan, 0) ASC');
     }
 

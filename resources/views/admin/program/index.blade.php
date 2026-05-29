@@ -51,7 +51,7 @@
                                         <img src="{{ asset('storage/'.$img) }}" alt="" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
                                     @else
                                         <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                                            <i class="{{ $program->icon ?? 'fas fa-book' }}"></i>
+                                            <i class="{{ $program->display_icon }}"></i>
                                         </div>
                                     @endif
                                     <div>

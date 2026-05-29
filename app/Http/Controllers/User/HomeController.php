@@ -7,6 +7,8 @@ use App\Models\HomeSetting;
 use App\Models\Keunggulan;
 use App\Models\Program;
 use App\Models\Testimonial;
+use App\Models\HomeSolutionSetting;
+use App\Models\HomeSolutionPoint;
 
 class HomeController extends Controller
 {
@@ -20,8 +22,20 @@ class HomeController extends Controller
 
         // Program & testimoni tetap dari tabel masing-masing
         $programs     = Program::active()->get();
-        $testimonials = Testimonial::orderBy('created_at', 'desc')->limit(6)->get();
+        $testimonials = Testimonial::active()
+            ->where('tampil_di_beranda', true)
+            ->orderBy('is_featured', 'desc')
+            ->orderBy('sort_order', 'asc')
+            ->latest()
+            ->get();
 
-        return view('user.home', compact('homeSetting', 'keunggulans', 'programs', 'testimonials'));
+        // Home Program Cards (CRUD 3 cards di kanan)
+        $homeProgramCards = \App\Models\HomeProgramCard::active()->get();
+
+        // Solution section
+        $solutionSetting = HomeSolutionSetting::getInstance();
+        $solutionPoints  = HomeSolutionPoint::active()->get();
+
+        return view('user.home', compact('homeSetting', 'keunggulans', 'programs', 'testimonials', 'solutionSetting', 'solutionPoints', 'homeProgramCards'));
     }
 }

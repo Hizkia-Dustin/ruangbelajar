@@ -18,6 +18,12 @@ class AboutSetting extends Model
         'vision_description',
         'mission_title',
         'mission_description',
+        'story_image',
+        'story_title_line_1',
+        'story_title_highlight',
+        'story_description',
+        'story_quote',
+        'story_bottom_text',
     ];
 
     /**

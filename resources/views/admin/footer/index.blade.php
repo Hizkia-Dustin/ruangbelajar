@@ -15,16 +15,7 @@
     <form method="POST" action="{{ route('admin.footer.update') }}" enctype="multipart/form-data" class="p-6 space-y-5">
         @csrf
 
-        {{-- Logo --}}
-        <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Logo Footer <span class="text-gray-400 font-normal">(opsional, jika berbeda dari header)</span></label>
-            <div class="flex items-center gap-4">
-                @if($footer->logo)
-                    <img src="{{ asset('storage/'.$footer->logo) }}" alt="Logo" class="h-12 rounded-lg object-contain border border-gray-200 px-2">
-                @endif
-                <input type="file" name="logo" accept="image/*" class="text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100 transition">
-            </div>
-        </div>
+
 
         {{-- Brand & Copyright --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

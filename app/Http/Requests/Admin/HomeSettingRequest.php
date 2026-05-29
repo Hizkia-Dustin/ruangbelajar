@@ -21,7 +21,8 @@ class HomeSettingRequest extends FormRequest
             'description'       => 'required|string',
             'button_text'       => 'required|string|max:100',
             'button_link'       => 'required|string|max:255',
-            'hero_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'hero_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp',
+            'website_logo'      => 'nullable|image|mimes:jpg,jpeg,png,webp',
             // Statistik
             'total_students'    => 'required|integer|min:0',
             'total_programs'    => 'required|integer|min:0',
@@ -42,7 +43,8 @@ class HomeSettingRequest extends FormRequest
             'total_tutors.required'      => 'Total tutor wajib diisi.',
             'hero_image.image'           => 'File harus berupa gambar.',
             'hero_image.mimes'           => 'Format gambar harus jpg, jpeg, png, atau webp.',
-            'hero_image.max'             => 'Ukuran gambar maksimal 2MB.',
+            'website_logo.image'         => 'File logo harus berupa gambar.',
+            'website_logo.mimes'         => 'Format logo harus jpg, jpeg, png, atau webp.',
         ];
     }
 }

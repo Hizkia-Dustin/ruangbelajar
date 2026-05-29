@@ -12,9 +12,17 @@ class RegisterHeroSetting extends Model
     protected $fillable = [
         'badge_text',
         'title_line_1',
+        'title_line_2',
         'title_highlight',
         'description',
-        'hero_image',
+        'benefit_1_title',
+        'benefit_1_description',
+        'benefit_2_title',
+        'benefit_2_description',
+        'benefit_3_title',
+        'benefit_3_description',
+        'counter_text',
+        'counter_description',
     ];
 
     // ----------------

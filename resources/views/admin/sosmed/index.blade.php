@@ -91,24 +91,17 @@
             <input type="hidden" name="_method" id="sosmed-method" value="POST">
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">Platform <span class="text-red-400">*</span></label>
-                <select name="platform" id="sosmed-platform" onchange="autoFillIcon(this.value)"
+                <select name="platform" id="sosmed-platform"
                         class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
                     @foreach($platforms as $p)
                     <option value="{{ $p }}">{{ $p }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">Username</label>
-                    <input type="text" name="username" id="sosmed-username" placeholder="@ruangbelajar"
-                           class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">Icon FA <span class="text-gray-400 font-normal">(auto)</span></label>
-                    <input type="text" name="icon" id="sosmed-icon" placeholder="fab fa-instagram"
-                           class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition font-mono text-xs">
-                </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">Username</label>
+                <input type="text" name="username" id="sosmed-username" placeholder="@ruangbelajar"
+                       class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
             </div>
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">URL Lengkap <span class="text-red-400">*</span></label>
@@ -141,16 +134,8 @@
 
 @push('scripts')
 <script>
-const platformIcons = @json(\App\Models\SocialMedia::PLATFORMS);
-
 function toggleModal(id) { const m=document.getElementById(id); m.classList.toggle('hidden'); m.classList.toggle('flex'); }
 function closeSosmedModal() { const m=document.getElementById('modal-sosmed'); m.classList.add('hidden'); m.classList.remove('flex'); }
-
-function autoFillIcon(platform) {
-    if (platformIcons[platform]) {
-        document.getElementById('sosmed-icon').value = platformIcons[platform].icon;
-    }
-}
 
 function openEditSosmed(id, platform, username, url, icon, sort, isActive) {
     document.getElementById('sosmed-form').action = `/admin/sosmed/${id}`;
@@ -158,14 +143,10 @@ function openEditSosmed(id, platform, username, url, icon, sort, isActive) {
     document.getElementById('sosmed-platform').value = platform;
     document.getElementById('sosmed-username').value = username;
     document.getElementById('sosmed-url').value = url;
-    document.getElementById('sosmed-icon').value = icon;
     document.getElementById('sosmed-sort').value = sort;
     document.getElementById('sosmed-active').checked = isActive;
     document.getElementById('modal-sosmed-title').textContent = 'Edit Platform';
     toggleModal('modal-sosmed');
 }
-
-// Auto-fill icon on load
-document.getElementById('sosmed-platform')?.dispatchEvent(new Event('change'));
 </script>
 @endpush

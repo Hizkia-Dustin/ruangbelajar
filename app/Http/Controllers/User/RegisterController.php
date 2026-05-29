@@ -48,16 +48,23 @@ class RegisterController extends Controller
             'program_id.exists'     => 'Program yang dipilih tidak valid.',
         ]);
 
+        $programName = null;
+        if ($request->program_id) {
+            $programName = Program::find($request->program_id)?->display_title;
+        }
+
         Registration::create([
-            'student_name' => $request->student_name,
-            'age'          => $request->age,
-            'class_name'   => $request->class_name,
-            'parent_name'  => $request->parent_name,
-            'whatsapp'     => $request->whatsapp,
-            'program_id'   => $request->program_id ?: null,
-            'notes'        => $request->notes,
-            'status'       => 'pending',
-            'source'       => 'web',
+            'student_name'     => $request->student_name,
+            'age'              => $request->age,
+            'class_name'       => $request->class_name,
+            'parent_name'      => $request->parent_name,
+            'whatsapp'         => $request->whatsapp,
+            'program_id'       => $request->program_id ?: null,
+            'program_name'     => $programName,
+            'selected_program' => $programName,
+            'notes'            => $request->notes,
+            'status'           => 'need_contact',
+            'source'           => 'web',
         ]);
 
         // Ambil pesan sukses dari database (atau fallback default)

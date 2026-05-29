@@ -4,36 +4,39 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AboutSettingRequest;
-use App\Http\Requests\Admin\AboutApproachRequest;
+use App\Http\Requests\Admin\AboutStoryRequest;
+use App\Http\Requests\Admin\AboutProblemSolutionSettingRequest;
+use App\Http\Requests\Admin\AboutProblemSolutionItemRequest;
+use App\Http\Requests\Admin\AboutStatisticRequest;
 use App\Models\AboutSetting;
-use App\Models\AboutApproach;
+use App\Models\AboutProblemSolutionSetting;
+use App\Models\AboutProblemSolutionItem;
+use App\Models\AboutStatistic;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * TentangController: Single-page CMS halaman Tentang Kami.
- *
- * - index()           → tampil halaman (hero + visi/misi + pendekatan)
- * - updateSetting()   → update hero + visi + misi
- * - storeApproach()   → tambah pendekatan belajar
- * - editApproach()    → form edit pendekatan
- * - updateApproach()  → simpan edit pendekatan
- * - destroyApproach() → hapus pendekatan
- * - toggleApproach()  → aktif/nonaktif pendekatan
+ * TentangController: Mengelola halaman CMS Tentang Kami dari admin panel.
  */
 class TentangController extends Controller
 {
-    // ---- MAIN PAGE ----
+    // ==========================================
+    // MAIN PAGE
+    // ==========================================
 
     public function index()
     {
-        $setting   = AboutSetting::getInstance();
-        $approaches = AboutApproach::where('type', 'approach')
-            ->orderBy('sort_order')->orderBy('id')->get();
+        $setting               = AboutSetting::getInstance();
+        $probSolSetting        = AboutProblemSolutionSetting::getInstance();
+        $probSolItems          = AboutProblemSolutionItem::orderBy('type')->orderBy('sort_order')->orderBy('id')->get();
+        $statistics            = AboutStatistic::orderBy('sort_order')->orderBy('id')->get();
 
-        return view('admin.tentang.index', compact('setting', 'approaches'));
+        return view('admin.tentang.index', compact('setting', 'probSolSetting', 'probSolItems', 'statistics'));
     }
 
-    // ---- HERO + VISI + MISI ----
+    // ==========================================
+    // HERO + VISI + MISI
+    // ==========================================
 
     public function updateSetting(AboutSettingRequest $request)
     {
@@ -50,69 +53,158 @@ class TentangController extends Controller
                 Storage::disk('public')->delete($setting->hero_image);
             }
             $data['hero_image'] = $request->file('hero_image')
-                ->store('images/tentang', 'public');
+                ->store('about', 'public');
         }
 
         $setting->update($data);
 
         return redirect()->route('admin.tentang.index')
-            ->with('success', '✅ Konten Tentang Kami berhasil diperbarui!');
+            ->with('success', '✅ Konten Utama Tentang Kami berhasil diperbarui!');
     }
 
-    // ---- PENDEKATAN BELAJAR CRUD ----
+    // ==========================================
+    // KISAH KAMI (STORY)
+    // ==========================================
 
-    public function storeApproach(AboutApproachRequest $request)
+    public function updateStory(AboutStoryRequest $request)
     {
-        $maxOrder = AboutApproach::where('type', 'approach')->max('sort_order') ?? 0;
+        $setting = AboutSetting::getInstance();
 
-        AboutApproach::create([
-            'type'        => 'approach',
-            'icon'        => $request->icon,
-            'title'       => $request->title,
-            'description' => $request->description,
-            'text'        => $request->title, // backward compat
-            'sort_order'  => $request->input('sort_order', $maxOrder + 1),
-            'is_active'   => $request->boolean('is_active', true),
+        $data = $request->only([
+            'story_title_line_1', 'story_title_highlight',
+            'story_description', 'story_quote', 'story_bottom_text',
         ]);
 
-        return redirect()->route('admin.tentang.index', '#pendekatan')
-            ->with('success', '✅ Pendekatan belajar berhasil ditambahkan!');
+        if ($request->hasFile('story_image')) {
+            if ($setting->story_image && Storage::disk('public')->exists($setting->story_image)) {
+                Storage::disk('public')->delete($setting->story_image);
+            }
+            $data['story_image'] = $request->file('story_image')
+                ->store('about', 'public');
+        }
+
+        $setting->update($data);
+
+        return redirect()->route('admin.tentang.index', '#story')
+            ->with('success', '✅ Kisah Kami berhasil diperbarui!');
     }
 
-    public function editApproach(AboutApproach $approach)
-    {
-        return view('admin.tentang.approach-edit', compact('approach'));
-    }
+    // ==========================================
+    // PROBLEM VS SOLUTION SETTING
+    // ==========================================
 
-    public function updateApproach(AboutApproachRequest $request, AboutApproach $approach)
+    public function updateProblemSolutionSetting(AboutProblemSolutionSettingRequest $request)
     {
-        $approach->update([
-            'icon'        => $request->icon,
-            'title'       => $request->title,
-            'description' => $request->description,
-            'text'        => $request->title,
-            'sort_order'  => $request->input('sort_order', $approach->sort_order),
-            'is_active'   => $request->boolean('is_active', true),
+        $setting = AboutProblemSolutionSetting::getInstance();
+
+        $data = $request->only([
+            'small_label', 'main_title', 'main_title_highlight',
+            'problem_title', 'solution_title',
         ]);
 
-        return redirect()->route('admin.tentang.index', '#pendekatan')
-            ->with('success', '✅ Pendekatan belajar berhasil diperbarui!');
+        $data['is_active'] = $request->boolean('is_active', true);
+
+        $setting->update($data);
+
+        return redirect()->route('admin.tentang.index', '#problem-solution')
+            ->with('success', '✅ Setelan Judul Problem vs Solution berhasil diperbarui!');
     }
 
-    public function destroyApproach(AboutApproach $approach)
-    {
-        $approach->delete();
+    // ==========================================
+    // PROBLEM VS SOLUTION ITEMS CRUD
+    // ==========================================
 
-        return redirect()->back()
-            ->with('success', '🗑️ Pendekatan belajar berhasil dihapus!');
+    public function storeProblemSolutionItem(AboutProblemSolutionItemRequest $request)
+    {
+        $maxOrder = AboutProblemSolutionItem::where('type', $request->type)->max('sort_order') ?? 0;
+
+        AboutProblemSolutionItem::create([
+            'type'       => $request->type,
+            'text'       => $request->text,
+            'sort_order' => $request->input('sort_order', $maxOrder + 1),
+            'is_active'  => $request->boolean('is_active', true),
+        ]);
+
+        return redirect()->route('admin.tentang.index', '#problem-solution')
+            ->with('success', '✅ Item baru berhasil ditambahkan!');
     }
 
-    public function toggleApproach(AboutApproach $approach)
+    public function updateProblemSolutionItem(AboutProblemSolutionItemRequest $request, AboutProblemSolutionItem $item)
     {
-        $approach->update(['is_active' => !$approach->is_active]);
-        $status = $approach->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        $item->update([
+            'type'       => $request->type,
+            'text'       => $request->text,
+            'sort_order' => $request->input('sort_order', $item->sort_order),
+            'is_active'  => $request->boolean('is_active', true),
+        ]);
+
+        return redirect()->route('admin.tentang.index', '#problem-solution')
+            ->with('success', '✅ Item berhasil diperbarui!');
+    }
+
+    public function destroyProblemSolutionItem(AboutProblemSolutionItem $item)
+    {
+        $item->delete();
+
+        return redirect()->route('admin.tentang.index', '#problem-solution')
+            ->with('success', '🗑️ Item berhasil dihapus!');
+    }
+
+    public function toggleProblemSolutionItem(AboutProblemSolutionItem $item)
+    {
+        $item->update(['is_active' => !$item->is_active]);
+        $status = $item->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
         return redirect()->back()
-            ->with('success', "✅ \"{$approach->title}\" berhasil {$status}!");
+            ->with('success', "✅ Item berhasil {$status}!");
+    }
+
+    // ==========================================
+    // STATISTICS CRUD
+    // ==========================================
+
+    public function storeStatistic(AboutStatisticRequest $request)
+    {
+        $maxOrder = AboutStatistic::max('sort_order') ?? 0;
+
+        AboutStatistic::create([
+            'number'     => $request->number,
+            'label'      => $request->label,
+            'sort_order' => $request->input('sort_order', $maxOrder + 1),
+            'is_active'  => $request->boolean('is_active', true),
+        ]);
+
+        return redirect()->route('admin.tentang.index', '#statistics')
+            ->with('success', '✅ Statistik berhasil ditambahkan!');
+    }
+
+    public function updateStatistic(AboutStatisticRequest $request, AboutStatistic $statistic)
+    {
+        $statistic->update([
+            'number'     => $request->number,
+            'label'      => $request->label,
+            'sort_order' => $request->input('sort_order', $statistic->sort_order),
+            'is_active'  => $request->boolean('is_active', true),
+        ]);
+
+        return redirect()->route('admin.tentang.index', '#statistics')
+            ->with('success', '✅ Statistik berhasil diperbarui!');
+    }
+
+    public function destroyStatistic(AboutStatistic $statistic)
+    {
+        $statistic->delete();
+
+        return redirect()->route('admin.tentang.index', '#statistics')
+            ->with('success', '🗑️ Statistik berhasil dihapus!');
+    }
+
+    public function toggleStatistic(AboutStatistic $statistic)
+    {
+        $statistic->update(['is_active' => !$statistic->is_active]);
+        $status = $statistic->is_active ? 'diaktifkan' : 'dinonaktifkan';
+
+        return redirect()->back()
+            ->with('success', "✅ Statistik berhasil {$status}!");
     }
 }

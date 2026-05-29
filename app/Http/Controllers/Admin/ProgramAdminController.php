@@ -43,7 +43,6 @@ class ProgramAdminController extends Controller
 
         $data['status']      = $request->input('status', 'active');
         $data['nama_program'] = $request->title;
-        $data['deskripsi']    = $request->deskripsi;
         $data['urutan']       = $request->input('sort_order', 0);
 
         Program::create($data);
@@ -76,7 +75,6 @@ class ProgramAdminController extends Controller
 
         $data['status']      = $request->input('status', 'active');
         $data['nama_program'] = $request->title;
-        $data['deskripsi']    = $request->deskripsi;
         $data['urutan']       = $request->input('sort_order', $program->urutan);
 
         $program->update($data);
@@ -195,15 +193,21 @@ class ProgramAdminController extends Controller
 
     private function prepareData(ProgramRequest $request): array
     {
-        return $request->only([
+        $data = $request->only([
             'title', 'subtitle', 'badge_text', 'kategori',
-            'age_range', 'short_description', 'deskripsi',
-            'icon', 'button_text', 'button_link',
+            'age_range', 'short_description',
+            'button_text', 'button_link',
             'background_theme', 'sort_order',
             'is_active', 'is_featured',
         ]) + [
             'is_active'   => $request->boolean('is_active', true),
             'is_featured' => $request->boolean('is_featured', false),
         ];
+
+        if ($request->has('description')) {
+            $data['deskripsi'] = $request->description;
+        }
+
+        return $data;
     }
 }

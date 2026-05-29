@@ -16,6 +16,22 @@ class RegisterFormSetting extends Model
         'whatsapp_notice',
         'privacy_notice',
         'form_image',
+        'label_child_name',
+        'placeholder_child_name',
+        'label_parent_name',
+        'placeholder_parent_name',
+        'label_age',
+        'placeholder_age',
+        'label_class',
+        'placeholder_class',
+        'label_program',
+        'placeholder_program',
+        'label_whatsapp',
+        'placeholder_whatsapp',
+        'label_note',
+        'placeholder_note',
+        'trust_text_1',
+        'trust_text_2',
     ];
 
     // ----------------

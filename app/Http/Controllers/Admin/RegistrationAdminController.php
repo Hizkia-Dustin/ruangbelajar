@@ -50,12 +50,10 @@ class RegistrationAdminController extends Controller
 
         // Statistik kartu header
         $stats = [
-            'total'     => Registration::count(),
-            'pending'   => Registration::where('status', 'pending')->count(),
-            'contacted' => Registration::where('status', 'contacted')->count(),
-            'trial'     => Registration::where('status', 'trial')->count(),
-            'accepted'  => Registration::where('status', 'accepted')->count(),
-            'rejected'  => Registration::where('status', 'rejected')->count(),
+            'total'        => Registration::count(),
+            'need_contact' => Registration::where('status', 'need_contact')->count(),
+            'contacted'    => Registration::where('status', 'contacted')->count(),
+            'rejected'     => Registration::where('status', 'rejected')->count(),
         ];
 
         return view('admin.registrations.index', compact(
@@ -117,7 +115,7 @@ class RegistrationAdminController extends Controller
         $request->validate([
             'ids'    => 'required|array',
             'ids.*'  => 'exists:registrations,id',
-            'action' => 'required|in:delete,pending,contacted,trial,accepted,rejected',
+            'action' => 'required|in:delete,need_contact,contacted,rejected',
         ]);
 
         $ids = $request->ids;

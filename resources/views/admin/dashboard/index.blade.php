@@ -41,22 +41,20 @@
 {{-- ============================
      STATS CARDS
      ============================ --}}
-<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
     @php
         $cards = [
             ['label' => 'Total Pendaftar', 'value' => $stats['total_pendaftar'], 'color' => 'blue',   'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z'],
-            ['label' => 'Pending',         'value' => $stats['pending'],         'color' => 'yellow', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
-            ['label' => 'Dihubungi',       'value' => $stats['contacted'],       'color' => 'sky',    'icon' => 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'],
-            ['label' => 'Trial Kelas',     'value' => $stats['trial'],           'color' => 'purple', 'icon' => 'M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'],
-            ['label' => 'Diterima',        'value' => $stats['accepted'],        'color' => 'green',  'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['label' => 'Perlu Dihubungi', 'value' => $stats['need_contact'],    'color' => 'yellow', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['label' => 'Sudah Dihubungi', 'value' => $stats['contacted'],       'color' => 'green',  'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+            ['label' => 'Tidak Lanjut',    'value' => $stats['rejected'],        'color' => 'red',    'icon' => 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'],
         ];
         $colorMap = [
             'blue'   => ['bg' => 'bg-blue-50',   'text' => 'text-blue-600',   'icon' => 'bg-blue-100',   'val' => 'text-blue-700'],
             'yellow' => ['bg' => 'bg-yellow-50', 'text' => 'text-yellow-600', 'icon' => 'bg-yellow-100', 'val' => 'text-yellow-700'],
-            'sky'    => ['bg' => 'bg-sky-50',    'text' => 'text-sky-600',    'icon' => 'bg-sky-100',    'val' => 'text-sky-700'],
-            'purple' => ['bg' => 'bg-purple-50', 'text' => 'text-purple-600', 'icon' => 'bg-purple-100', 'val' => 'text-purple-700'],
             'green'  => ['bg' => 'bg-green-50',  'text' => 'text-green-600',  'icon' => 'bg-green-100',  'val' => 'text-green-700'],
+            'red'    => ['bg' => 'bg-red-50',    'text' => 'text-red-600',    'icon' => 'bg-red-100',    'val' => 'text-red-700'],
         ];
     @endphp
 
@@ -102,18 +100,14 @@
                 @foreach($latestRegistrations as $reg)
                     @php
                         $statusColors = [
-                            'pending'   => 'bg-yellow-100 text-yellow-700',
-                            'contacted' => 'bg-sky-100 text-sky-700',
-                            'trial'     => 'bg-purple-100 text-purple-700',
-                            'accepted'  => 'bg-green-100 text-green-700',
-                            'rejected'  => 'bg-red-100 text-red-700',
+                            'need_contact' => 'bg-amber-100 text-amber-700',
+                            'contacted'    => 'bg-emerald-100 text-emerald-700',
+                            'rejected'     => 'bg-red-100 text-red-700',
                         ];
                         $statusLabels = [
-                            'pending'   => 'Pending',
-                            'contacted' => 'Dihubungi',
-                            'trial'     => 'Trial',
-                            'accepted'  => 'Diterima',
-                            'rejected'  => 'Ditolak',
+                            'need_contact' => 'Perlu Dihubungi',
+                            'contacted'    => 'Sudah Dihubungi',
+                            'rejected'     => 'Tidak Lanjut',
                         ];
                     @endphp
                     <div class="flex items-center gap-4 px-6 py-3.5 hover:bg-gray-50 transition-colors">
@@ -125,7 +119,7 @@
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-800 truncate">{{ $reg->student_name }}</p>
                             <p class="text-xs text-gray-400 truncate">
-                                {{ $reg->parent_name }} · {{ $reg->program?->nama_program ?? 'Belum dipilih' }}
+                                {{ $reg->parent_name }} · {{ $reg->display_program }}
                             </p>
                         </div>
                         {{-- Status badge --}}
@@ -136,6 +130,11 @@
                         <span class="text-xs text-gray-400 flex-shrink-0 hidden sm:block">
                             {{ $reg->created_at->diffForHumans() }}
                         </span>
+                        {{-- Detail button --}}
+                        <a href="{{ route('admin.registrations.show', $reg) }}"
+                           class="text-xs font-semibold text-brand-600 bg-brand-50 hover:bg-brand-100 px-3 py-1 rounded-lg transition-colors flex-shrink-0">
+                            Detail
+                        </a>
                     </div>
                 @endforeach
             </div>
@@ -155,7 +154,7 @@
                     ['label' => 'Kelola Program',      'route' => 'admin.programs.index',            'color' => 'text-violet-600 bg-violet-50','icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
                     ['label' => 'Setting Kontak',      'route' => 'admin.contact.settings.index',   'color' => 'text-sky-600 bg-sky-50',     'icon' => 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
                     ['label' => 'Data Pendaftar',      'route' => 'admin.registrations.index',       'color' => 'text-emerald-600 bg-emerald-50','icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
-                    ['label' => 'Testimoni',           'route' => 'admin.testimonial.index',        'color' => 'text-pink-600 bg-pink-50',   'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-3 3-3-3z'],
+                    ['label' => 'Testimoni',           'route' => 'admin.testimonials.index',        'color' => 'text-pink-600 bg-pink-50',   'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-3 3-3-3z'],
                 ];
             @endphp
             @foreach($quickLinks as $link)

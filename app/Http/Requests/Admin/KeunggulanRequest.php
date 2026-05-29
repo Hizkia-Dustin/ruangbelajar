@@ -14,7 +14,6 @@ class KeunggulanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'icon'        => 'nullable|string|max:100',
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'sort_order'  => 'nullable|integer|min:0',

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\AboutApproach;
 use App\Models\AboutSetting;
+use App\Models\AboutProblemSolutionSetting;
+use App\Models\AboutProblemSolutionItem;
+use App\Models\AboutStatistic;
 use App\Models\Testimonial;
 
 class AboutController extends Controller
@@ -14,20 +16,22 @@ class AboutController extends Controller
         // Data dinamis dari about_settings (singleton)
         $aboutSetting = AboutSetting::getInstance();
 
-        // Pendekatan belajar aktif (type='approach')
-        $approaches = AboutApproach::where('type', 'approach')
-            ->where('is_active', true)
-            ->orderBy('sort_order')
+        // Problem vs Solution dinamis
+        $probSolSetting = AboutProblemSolutionSetting::getInstance();
+        $probSolItems   = AboutProblemSolutionItem::active()->get();
+
+        // Statistik dinamis Tentang Kami
+        $aboutStatistics = AboutStatistic::active()->get();
+
+        $testimonials = Testimonial::active()
+            ->where('tampil_di_tentang', true)
+            ->orderBy('is_featured', 'desc')
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        // Problem vs Solution (backward compat, tetap tersedia)
-        $problems  = AboutApproach::problems()->get();
-        $solutions = AboutApproach::solutions()->get();
-
-        $testimonials = Testimonial::orderBy('created_at', 'desc')->limit(3)->get();
-
         return view('user.about', compact(
-            'aboutSetting', 'approaches', 'problems', 'solutions', 'testimonials'
+            'aboutSetting', 'probSolSetting', 'probSolItems', 'aboutStatistics', 'testimonials'
         ));
     }
 }

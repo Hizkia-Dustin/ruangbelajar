@@ -5,6 +5,7 @@ $siteTagline  = Setting::get('website_tagline', 'Platform Edukasi Masa Kini');
 $faviconPath  = Setting::get('favicon');
 $canonicalUrl = rtrim(Setting::get('canonical_url', config('app.url')), '/');
 $currentUrl   = $canonicalUrl . request()->getPathInfo();
+$websiteLogo  = Setting::get('website_logo');
 // SEO per halaman
 $currentPage  = trim(request()->getPathInfo(), '/') ?: 'home';
 $pageKey      = str_replace('/', '_', $currentPage);
@@ -173,7 +174,11 @@ $bodyScript   = Setting::get('custom_body_script');
     <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-xl shadow-lg shadow-blue-900/5 z-50 transition-all duration-500 border-b border-blue-50/50" id="navbar">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="{{ url('/') }}" class="flex items-center h-full py-1">
-                <img src="{{ asset('images/logo.png') }}" alt="Ruang Belajar Logo" class="h-full w-auto object-contain hover:scale-105 transition-transform duration-300">
+                @if($websiteLogo)
+                    <img src="{{ asset('storage/' . $websiteLogo) }}" alt="{{ $siteName }} Logo" class="h-full max-h-[60px] w-auto object-contain hover:scale-105 transition-transform duration-300">
+                @else
+                    <img src="{{ asset('images/logo.png') }}" alt="Ruang Belajar Logo" class="h-full max-h-[60px] w-auto object-contain hover:scale-105 transition-transform duration-300">
+                @endif
             </a>
 
             <!-- Desktop Menu -->
@@ -228,14 +233,7 @@ $bodyScript   = Setting::get('custom_body_script');
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20 relative z-10">
             {{-- Brand + Deskripsi --}}
             <div>
-                <a href="{{ url('/') }}" class="flex items-center gap-3 mb-8">
-                    @if($footerData->logo)
-                        <img src="{{ asset('storage/'.$footerData->logo) }}" alt="{{ $footerData->brand_name ?? 'Ruang Belajar' }}" class="h-8 object-contain">
-                    @else
-                        <div class="bg-white text-primary w-10 h-10 rounded-xl flex items-center justify-center font-black shadow-lg">RB</div>
-                        <span class="text-xl font-bold tracking-tight text-white uppercase italic">Ruang <span class="text-secondary italic">Belajar</span></span>
-                    @endif
-                </a>
+                <h4 class="font-black text-white mb-8 italic uppercase tracking-widest text-sm">{{ $footerData->brand_name ?? 'Ruang Belajar' }}</h4>
                 <p class="text-blue-200 font-medium leading-relaxed mb-8 opacity-80">
                     {{ $footerData->footer_description ?? $footerData->description ?? 'Bimbingan belajar modern untuk melahirkan pribadi yang cerdas, inovatif, dan siap menghadapi masa depan yang kompetitif.' }}
                 </p>

@@ -27,9 +27,9 @@ class ContactSettingController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'contact_hero_background_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
-            'contact_cta_image'             => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
-            'contact_location_image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            'contact_hero_background_image' => 'nullable|image|mimes:jpeg,png,jpg,webp',
+            'contact_cta_image'             => 'nullable|image|mimes:jpeg,png,jpg,webp',
+            'contact_location_image'        => 'nullable|image|mimes:jpeg,png,jpg,webp',
             'contact_maps_latitude'         => 'nullable|numeric',
             'contact_maps_longitude'        => 'nullable|numeric',
             'contact_maps_zoom_level'       => 'nullable|integer|min:1|max:21',

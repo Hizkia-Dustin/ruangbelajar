@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\ContactFaqController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\KeunggulanController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\TestimonialAdminController;
 use App\Http\Controllers\Admin\RegisterHeroSettingController;
 use App\Http\Controllers\Admin\RegisterBenefitController;
 use App\Http\Controllers\Admin\RegisterFormSettingController;
@@ -35,8 +36,8 @@ use App\Http\Controllers\Admin\RegistrationAdminController;
 use App\Http\Controllers\Admin\KontakAdminController;
 use App\Http\Controllers\Admin\FooterAdminController;
 use App\Http\Controllers\Admin\SosmedAdminController;
-use App\Http\Controllers\Admin\SeoSettingController;
-use App\Http\Controllers\Admin\WebsiteSettingController;
+
+
 
 // ============================
 // USER / PUBLIC ROUTES
@@ -81,42 +82,50 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // ---- BERANDA (CMS baru) ----
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
     Route::put('/beranda/hero', [BerandaController::class, 'updateHero'])->name('beranda.hero.update');
+    Route::post('/beranda/website-logo', [BerandaController::class, 'updateWebsiteLogo'])->name('beranda.website-logo.update');
     Route::post('/beranda/keunggulan', [BerandaController::class, 'storeKeunggulan'])->name('beranda.keunggulan.store');
     Route::get('/beranda/keunggulan/{keunggulan}/edit', [BerandaController::class, 'editKeunggulan'])->name('beranda.keunggulan.edit');
     Route::put('/beranda/keunggulan/{keunggulan}', [BerandaController::class, 'updateKeunggulan'])->name('beranda.keunggulan.update');
     Route::delete('/beranda/keunggulan/{keunggulan}', [BerandaController::class, 'destroyKeunggulan'])->name('beranda.keunggulan.destroy');
     Route::patch('/beranda/keunggulan/{keunggulan}/toggle', [BerandaController::class, 'toggleKeunggulan'])->name('beranda.keunggulan.toggle');
 
+    // ---- BERANDA PROGRAM CARDS CRUD ----
+    Route::post('/beranda/program-card', [BerandaController::class, 'storeProgramCard'])->name('beranda.program-card.store');
+    Route::put('/beranda/program-card/{card}', [BerandaController::class, 'updateProgramCard'])->name('beranda.program-card.update');
+    Route::delete('/beranda/program-card/{card}', [BerandaController::class, 'destroyProgramCard'])->name('beranda.program-card.destroy');
+    Route::patch('/beranda/program-card/{card}/toggle', [BerandaController::class, 'toggleProgramCard'])->name('beranda.program-card.toggle');
+
+    // ---- BERANDA SOLUTION SECTION ----
+    Route::put('/beranda/solution', [BerandaController::class, 'updateSolutionSetting'])->name('beranda.solution.update');
+    Route::post('/beranda/solution-point', [BerandaController::class, 'storeSolutionPoint'])->name('beranda.solution-point.store');
+    Route::put('/beranda/solution-point/{point}', [BerandaController::class, 'updateSolutionPoint'])->name('beranda.solution-point.update');
+    Route::delete('/beranda/solution-point/{point}', [BerandaController::class, 'destroySolutionPoint'])->name('beranda.solution-point.destroy');
+    Route::patch('/beranda/solution-point/{point}/toggle', [BerandaController::class, 'toggleSolutionPoint'])->name('beranda.solution-point.toggle');
+
     // ---- BERANDA LEGACY (tetap ada untuk backward compat) ----
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::resource('keunggulan', KeunggulanController::class)->except(['show']);
 
-    // ---- WEBSITE SETTINGS ----
-    Route::get('/settings/website', [WebsiteSettingController::class, 'index'])->name('settings.website');
-    Route::post('/settings/website', [WebsiteSettingController::class, 'update'])->name('settings.website.update');
 
-    // ---- SEO SETTINGS ----
-    Route::get('/settings/seo', [SeoSettingController::class, 'index'])->name('settings.seo');
-    Route::post('/settings/seo/global', [SeoSettingController::class, 'updateGlobal'])->name('settings.seo.global');
-    Route::post('/settings/seo/page/{page}', [SeoSettingController::class, 'updatePage'])->name('settings.seo.page');
-    Route::post('/settings/seo/scripts', [SeoSettingController::class, 'updateScripts'])->name('settings.seo.scripts');
 
     // ---- TENTANG KAMI (CMS baru) ----
     Route::get('/tentang', [TentangController::class, 'index'])->name('tentang.index');
     Route::put('/tentang/setting', [TentangController::class, 'updateSetting'])->name('tentang.setting.update');
-    Route::post('/tentang/approach', [TentangController::class, 'storeApproach'])->name('tentang.approach.store');
-    Route::get('/tentang/approach/{approach}/edit', [TentangController::class, 'editApproach'])->name('tentang.approach.edit');
-    Route::put('/tentang/approach/{approach}', [TentangController::class, 'updateApproach'])->name('tentang.approach.update');
-    Route::delete('/tentang/approach/{approach}', [TentangController::class, 'destroyApproach'])->name('tentang.approach.destroy');
-    Route::patch('/tentang/approach/{approach}/toggle', [TentangController::class, 'toggleApproach'])->name('tentang.approach.toggle');
+    Route::put('/tentang/story', [TentangController::class, 'updateStory'])->name('tentang.story.update');
+    Route::put('/tentang/problem-solution', [TentangController::class, 'updateProblemSolutionSetting'])->name('tentang.problem-solution.update');
+    Route::post('/tentang/problem-solution-item', [TentangController::class, 'storeProblemSolutionItem'])->name('tentang.problem-solution-item.store');
+    Route::put('/tentang/problem-solution-item/{item}', [TentangController::class, 'updateProblemSolutionItem'])->name('tentang.problem-solution-item.update');
+    Route::delete('/tentang/problem-solution-item/{item}', [TentangController::class, 'destroyProblemSolutionItem'])->name('tentang.problem-solution-item.destroy');
+    Route::patch('/tentang/problem-solution-item/{item}/toggle', [TentangController::class, 'toggleProblemSolutionItem'])->name('tentang.problem-solution-item.toggle');
+    Route::post('/tentang/statistic', [TentangController::class, 'storeStatistic'])->name('tentang.statistic.store');
+    Route::put('/tentang/statistic/{statistic}', [TentangController::class, 'updateStatistic'])->name('tentang.statistic.update');
+    Route::delete('/tentang/statistic/{statistic}', [TentangController::class, 'destroyStatistic'])->name('tentang.statistic.destroy');
+    Route::patch('/tentang/statistic/{statistic}/toggle', [TentangController::class, 'toggleStatistic'])->name('tentang.statistic.toggle');
 
     // ---- TENTANG KAMI LEGACY ----
     Route::get('/about/settings', [AboutSettingController::class, 'index'])->name('about.settings.index');
     Route::put('/about/settings', [AboutSettingController::class, 'update'])->name('about.settings.update');
-    Route::resource('about/approach', AboutApproachController::class)
-        ->except(['show'])
-        ->names('about.approach');
 
     // ---- PROGRAM (CMS baru) ----
     Route::get('/programs', [ProgramAdminController::class, 'index'])->name('programs.index');
@@ -167,6 +176,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/kontak/faq/{faq}', [KontakAdminController::class, 'updateFaq'])->name('kontak.faq.update');
     Route::delete('/kontak/faq/{faq}', [KontakAdminController::class, 'destroyFaq'])->name('kontak.faq.destroy');
     Route::patch('/kontak/faq/{faq}/toggle', [KontakAdminController::class, 'toggleFaq'])->name('kontak.faq.toggle');
+    Route::post('/kontak/cta-feature', [KontakAdminController::class, 'storeCtaFeature'])->name('kontak.cta-feature.store');
+    Route::put('/kontak/cta-feature/{feature}', [KontakAdminController::class, 'updateCtaFeature'])->name('kontak.cta-feature.update');
+    Route::delete('/kontak/cta-feature/{feature}', [KontakAdminController::class, 'destroyCtaFeature'])->name('kontak.cta-feature.destroy');
+    Route::patch('/kontak/cta-feature/{feature}/toggle', [KontakAdminController::class, 'toggleCtaFeature'])->name('kontak.cta-feature.toggle');
 
     // ---- FOOTER CMS (baru) ----
     Route::get('/footer', [FooterAdminController::class, 'index'])->name('footer.index');
@@ -180,7 +193,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::patch('/sosmed/{sosmed}/toggle', [SosmedAdminController::class, 'toggle'])->name('sosmed.toggle');
 
     // ---- TESTIMONI ----
-    Route::resource('testimonial', TestimonialController::class)->except(['show']);
+    Route::resource('testimonials', TestimonialAdminController::class);
+    Route::patch('/testimonials/{testimonial}/toggle-active', [TestimonialAdminController::class, 'toggleActive'])->name('testimonials.toggle-active');
+    Route::patch('/testimonials/{testimonial}/toggle-featured', [TestimonialAdminController::class, 'toggleFeatured'])->name('testimonials.toggle-featured');
 
     // ---- DATA PENDAFTAR (CMS baru) ----
     Route::get('/registrations', [RegistrationAdminController::class, 'index'])->name('registrations.index');

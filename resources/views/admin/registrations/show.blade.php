@@ -94,7 +94,11 @@ $badge = $badgeMap[$registration->status] ?? 'bg-gray-100 text-gray-600';
     </div>
 
     {{-- Follow Up WA Button --}}
-    <a href="https://wa.me/{{ preg_replace('/\D/','',$registration->whatsapp) }}?text={{ urlencode('Halo Bunda/Ayah '.$registration->parent_name.', kami dari Ruang Belajar ingin menindaklanjuti pendaftaran '.$registration->student_name.'. 😊') }}"
+    @php
+        $waMessage = urlencode("Halo Kak, kami dari Ruang Belajar ingin menindaklanjuti pendaftaran atas nama " . $registration->student_name . ". Apakah masih berminat untuk konsultasi program belajar?");
+        $waPhone = preg_replace('/\D/', '', $registration->whatsapp);
+    @endphp
+    <a href="https://wa.me/{{ $waPhone }}?text={{ $waMessage }}"
        target="_blank"
        class="flex items-center justify-center gap-2 w-full py-3 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-2xl transition shadow-sm">
         <i class="fab fa-whatsapp text-lg"></i> Follow Up via WhatsApp
@@ -153,8 +157,8 @@ $badge = $badgeMap[$registration->status] ?? 'bg-gray-100 text-gray-600';
             Pipeline Status
         </h3>
         @php
-        $pipeline = ['pending','contacted','trial','accepted','rejected'];
-        $colors   = ['pending'=>'bg-yellow-400','contacted'=>'bg-sky-400','trial'=>'bg-purple-400','accepted'=>'bg-green-400','rejected'=>'bg-red-400'];
+        $pipeline = ['need_contact', 'contacted', 'rejected'];
+        $colors   = ['need_contact' => 'bg-amber-400', 'contacted' => 'bg-emerald-400', 'rejected' => 'bg-red-400'];
         $currentIdx = array_search($registration->status, $pipeline);
         @endphp
         <div class="flex items-center gap-2 overflow-x-auto pb-2">
@@ -162,7 +166,6 @@ $badge = $badgeMap[$registration->status] ?? 'bg-gray-100 text-gray-600';
             @php
                 $isActive  = $step === $registration->status;
                 $isPast    = ($registration->status !== 'rejected') && ($idx < $currentIdx);
-                $isRejected = $step === 'rejected' && $registration->status === 'rejected';
             @endphp
             <div class="flex items-center gap-2 flex-shrink-0">
                 <div class="flex flex-col items-center gap-1">
@@ -170,7 +173,7 @@ $badge = $badgeMap[$registration->status] ?? 'bg-gray-100 text-gray-600';
                         {{ $isActive ? $colors[$step].' text-white ring-2 ring-offset-2 ring-current' : ($isPast ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                         @if($isPast)✓@else{{ $idx+1 }}@endif
                     </div>
-                    <p class="text-[9px] text-gray-500 whitespace-nowrap font-medium">{{ \App\Models\Registration::STATUSES[$step] }}</p>
+                    <p class="text-[10px] text-gray-500 whitespace-nowrap font-medium">{{ \App\Models\Registration::STATUSES[$step] }}</p>
                 </div>
                 @if(!$loop->last)
                 <div class="w-8 h-0.5 {{ $isPast ? 'bg-green-300' : 'bg-gray-200' }} mb-3 flex-shrink-0"></div>

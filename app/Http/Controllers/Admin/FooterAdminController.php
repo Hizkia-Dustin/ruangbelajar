@@ -36,7 +36,6 @@ class FooterAdminController extends Controller
             'footer_cta_subtitle'  => 'nullable|string|max:255',
             'footer_cta_button_text' => 'nullable|string|max:100',
             'footer_cta_button_url'  => 'nullable|url|max:500',
-            'logo'                 => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
         ]);
 
         $footer = FooterSetting::getInstance();
@@ -46,13 +45,6 @@ class FooterAdminController extends Controller
             'footer_cta_title', 'footer_cta_subtitle',
             'footer_cta_button_text', 'footer_cta_button_url',
         ]);
-
-        if ($request->hasFile('logo')) {
-            if ($footer->logo && Storage::disk('public')->exists($footer->logo)) {
-                Storage::disk('public')->delete($footer->logo);
-            }
-            $data['logo'] = $request->file('logo')->store('images/footer', 'public');
-        }
 
         if ($footer->exists) {
             $footer->update($data);
