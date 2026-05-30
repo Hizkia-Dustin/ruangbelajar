@@ -12,6 +12,7 @@ return new class extends Migration {
             [
                 'name' => 'Admin Ruang Belajar',
                 'password' => Hash::make('password123'),
+                'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
