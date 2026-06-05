@@ -9,7 +9,11 @@
 {{-- ===== FORM FOOTER ===== --}}
 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-slate-50 to-white flex items-center gap-3">
-        <div class="w-8 h-8 bg-slate-100 text-slate-600 rounded-lg flex items-center justify-center text-sm">🦶</div>
+        <div class="w-8 h-8 bg-slate-100 text-slate-600 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+        </div>
         <h2 class="font-semibold text-gray-800">Konten Footer</h2>
     </div>
     <form method="POST" action="{{ route('admin.footer.update') }}" enctype="multipart/form-data" class="p-6 space-y-5">
