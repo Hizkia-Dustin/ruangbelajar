@@ -570,6 +570,58 @@
         </div>
     </div>
 
+    {{-- ============ SECTION 5: WHATSAPP FLOATING ============ --}}
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" id="whatsapp-floating">
+        <div class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-green-50 to-white">
+            <div class="w-8 h-8 bg-green-100 text-green-700 rounded-lg flex items-center justify-center text-sm">
+                💬
+            </div>
+            <div>
+                <h2 class="font-semibold text-gray-800 text-sm">Pengaturan WhatsApp Floating</h2>
+                <p class="text-xs text-gray-400">Kelola nomor, pesan default, dan status aktif tombol WhatsApp melayang di semua halaman user</p>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ route('admin.beranda.whatsapp-floating.update') }}" class="p-6 space-y-4">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Nomor WhatsApp <span class="text-red-400">*</span></label>
+                        <input type="text" name="wa_floating_number" 
+                               value="{{ old('wa_floating_number', \App\Models\Setting::get('wa_floating_number', '083157112597')) }}"
+                               placeholder="Contoh: 083157112597 atau 6283157112597" required
+                               class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
+                        @error('wa_floating_number')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div class="flex items-center gap-3 pt-2">
+                        <input type="hidden" name="wa_floating_status" value="0">
+                        <input type="checkbox" name="wa_floating_status" id="wa-floating-status" value="1"
+                               {{ \App\Models\Setting::get('wa_floating_status', '1') == '1' ? 'checked' : '' }}
+                               class="w-4 h-4 text-brand-600 border-gray-300 rounded focus:ring-brand-500">
+                        <label for="wa-floating-status" class="text-xs font-semibold text-gray-600 cursor-pointer">Tampilkan Tombol WhatsApp Floating di Halaman User</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">Pesan Default WhatsApp <span class="text-gray-400 font-normal">(opsional)</span></label>
+                    <textarea name="wa_floating_message" rows="3"
+                              placeholder="Halo kak, saya ingin bertanya tentang program..."
+                              class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition resize-none">{{ old('wa_floating_message', \App\Models\Setting::get('wa_floating_message', '')) }}</textarea>
+                    @error('wa_floating_message')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Simpan Pengaturan WhatsApp
+                </button>
+            </div>
+        </form>
+    </div>
+
 </div>{{-- /space-y-8 --}}
 
 {{-- ============ MODAL TAMBAH KEUNGGULAN ============ --}}

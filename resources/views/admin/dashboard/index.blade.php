@@ -19,7 +19,7 @@
         <h2 class="text-2xl font-bold">Selamat Datang di Admin Panel</h2>
         <p class="text-brand-200 text-sm mt-1">Kelola seluruh konten website Ruang Belajar dari sini.</p>
         <div class="mt-4 flex flex-wrap gap-3">
-            <a href="{{ route('admin.register.registrations.index') }}"
+            <a href="{{ route('admin.registrations.index') }}"
                class="inline-flex items-center gap-2 bg-white text-brand-700 text-sm font-semibold px-4 py-2 rounded-xl hover:bg-brand-50 transition-colors shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -82,7 +82,7 @@
     <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <h3 class="font-semibold text-gray-800">Pendaftar Terbaru</h3>
-            <a href="{{ route('admin.register.registrations.index') }}"
+            <a href="{{ route('admin.registrations.index') }}"
                class="text-xs text-brand-600 hover:text-brand-700 font-medium transition-colors">
                 Lihat semua →
             </a>
@@ -152,7 +152,7 @@
                     ['label' => 'Setting Beranda',     'route' => 'admin.beranda.index',             'color' => 'text-blue-600 bg-blue-50',   'icon' => 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z'],
                     ['label' => 'Setting Tentang',     'route' => 'admin.tentang.index',             'color' => 'text-indigo-600 bg-indigo-50','icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
                     ['label' => 'Kelola Program',      'route' => 'admin.programs.index',            'color' => 'text-violet-600 bg-violet-50','icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
-                    ['label' => 'Setting Kontak',      'route' => 'admin.contact.settings.index',   'color' => 'text-sky-600 bg-sky-50',     'icon' => 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
+                    ['label' => 'Setting Kontak',      'route' => 'admin.kontak.index',   'color' => 'text-sky-600 bg-sky-50',     'icon' => 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
                     ['label' => 'Data Pendaftar',      'route' => 'admin.registrations.index',       'color' => 'text-emerald-600 bg-emerald-50','icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
                     ['label' => 'Testimoni',           'route' => 'admin.testimonials.index',        'color' => 'text-pink-600 bg-pink-50',   'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-3 3-3-3z'],
                 ];

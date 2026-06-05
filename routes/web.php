@@ -83,6 +83,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
     Route::put('/beranda/hero', [BerandaController::class, 'updateHero'])->name('beranda.hero.update');
     Route::post('/beranda/website-logo', [BerandaController::class, 'updateWebsiteLogo'])->name('beranda.website-logo.update');
+    Route::post('/beranda/whatsapp-floating', [BerandaController::class, 'updateWhatsappFloating'])->name('beranda.whatsapp-floating.update');
     Route::post('/beranda/keunggulan', [BerandaController::class, 'storeKeunggulan'])->name('beranda.keunggulan.store');
     Route::get('/beranda/keunggulan/{keunggulan}/edit', [BerandaController::class, 'editKeunggulan'])->name('beranda.keunggulan.edit');
     Route::put('/beranda/keunggulan/{keunggulan}', [BerandaController::class, 'updateKeunggulan'])->name('beranda.keunggulan.update');
@@ -102,10 +103,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/beranda/solution-point/{point}', [BerandaController::class, 'destroySolutionPoint'])->name('beranda.solution-point.destroy');
     Route::patch('/beranda/solution-point/{point}/toggle', [BerandaController::class, 'toggleSolutionPoint'])->name('beranda.solution-point.toggle');
 
-    // ---- BERANDA LEGACY (tetap ada untuk backward compat) ----
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
-    Route::resource('keunggulan', KeunggulanController::class)->except(['show']);
+    // ---- BERANDA LEGACY (redirect ke beranda CMS baru) ----
+    Route::get('/settings', fn() => redirect()->route('admin.beranda.index'))->name('settings.index');
+    Route::put('/settings', fn() => redirect()->route('admin.beranda.index'))->name('settings.update');
+    Route::get('/keunggulan', fn() => redirect()->route('admin.beranda.index'))->name('keunggulan.index');
+    Route::get('/keunggulan/create', fn() => redirect()->route('admin.beranda.index'))->name('keunggulan.create');
+    Route::get('/keunggulan/{keunggulan}/edit', fn() => redirect()->route('admin.beranda.index'))->name('keunggulan.edit');
 
 
 
@@ -123,9 +126,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/tentang/statistic/{statistic}', [TentangController::class, 'destroyStatistic'])->name('tentang.statistic.destroy');
     Route::patch('/tentang/statistic/{statistic}/toggle', [TentangController::class, 'toggleStatistic'])->name('tentang.statistic.toggle');
 
-    // ---- TENTANG KAMI LEGACY ----
-    Route::get('/about/settings', [AboutSettingController::class, 'index'])->name('about.settings.index');
-    Route::put('/about/settings', [AboutSettingController::class, 'update'])->name('about.settings.update');
+    // ---- TENTANG KAMI LEGACY (redirect ke tentang CMS baru) ----
+    Route::get('/about/settings', fn() => redirect()->route('admin.tentang.index'))->name('about.settings.index');
+    Route::put('/about/settings', fn() => redirect()->route('admin.tentang.index'))->name('about.settings.update');
 
     // ---- PROGRAM (CMS baru) ----
     Route::get('/programs', [ProgramAdminController::class, 'index'])->name('programs.index');
@@ -145,29 +148,29 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/programs/{program}/highlights/{highlight}', [ProgramAdminController::class, 'updateHighlight'])->name('programs.highlights.update');
     Route::delete('/programs/{program}/highlights/{highlight}', [ProgramAdminController::class, 'destroyHighlight'])->name('programs.highlights.destroy');
 
-    // ---- PROGRAM LEGACY ----
-    Route::get('/program/settings', [ProgramPageSettingController::class, 'index'])->name('program.settings.index');
-    Route::put('/program/settings', [ProgramPageSettingController::class, 'update'])->name('program.settings.update');
+    // ---- PROGRAM LEGACY (redirect ke programs CMS baru) ----
+    Route::get('/program/settings', fn() => redirect()->route('admin.programs.index'))->name('program.settings.index');
+    Route::put('/program/settings', fn() => redirect()->route('admin.programs.index'))->name('program.settings.update');
     Route::resource('program', ProgramController::class)->except(['show']);
-    Route::resource('program.features', ProgramFeatureController::class)
-        ->except(['show'])
-        ->names('program.features');
-    Route::resource('program.highlights', ProgramHighlightController::class)
-        ->except(['show'])
-        ->names('program.highlights');
+    Route::get('/program/{program}/features', fn($program) => redirect()->route('admin.programs.edit', $program))->name('program.features.index');
+    Route::get('/program/{program}/features/create', fn($program) => redirect()->route('admin.programs.edit', $program))->name('program.features.create');
+    Route::get('/program/{program}/features/{feature}/edit', fn($program, $feature) => redirect()->route('admin.programs.edit', $program))->name('program.features.edit');
+    Route::get('/program/{program}/highlights', fn($program) => redirect()->route('admin.programs.edit', $program))->name('program.highlights.index');
+    Route::get('/program/{program}/highlights/create', fn($program) => redirect()->route('admin.programs.edit', $program))->name('program.highlights.create');
+    Route::get('/program/{program}/highlights/{highlight}/edit', fn($program, $highlight) => redirect()->route('admin.programs.edit', $program))->name('program.highlights.edit');
 
-    // ---- KONTAK ----
-    Route::get('/contact/settings', [ContactSettingController::class, 'index'])->name('contact.settings.index');
-    Route::put('/contact/settings', [ContactSettingController::class, 'update'])->name('contact.settings.update');
-    Route::resource('contact/cta-features', ContactCtaFeatureController::class)
-        ->except(['show'])
-        ->names('contact.cta-features');
-    Route::resource('contact/faq', ContactFaqController::class)
-        ->except(['show'])
-        ->names('contact.faq');
-    Route::resource('contact/social-media', SocialMediaController::class)
-        ->except(['show'])
-        ->names('contact.social-media');
+    // ---- KONTAK LEGACY (redirect ke kontak / sosmed CMS baru) ----
+    Route::get('/contact/settings', fn() => redirect()->route('admin.kontak.index'))->name('contact.settings.index');
+    Route::put('/contact/settings', fn() => redirect()->route('admin.kontak.index'))->name('contact.settings.update');
+    Route::get('/contact/cta-features', fn() => redirect()->route('admin.kontak.index'))->name('contact.cta-features.index');
+    Route::get('/contact/cta-features/create', fn() => redirect()->route('admin.kontak.index'))->name('contact.cta-features.create');
+    Route::get('/contact/cta-features/{cta_feature}/edit', fn() => redirect()->route('admin.kontak.index'))->name('contact.cta-features.edit');
+    Route::get('/contact/faq', fn() => redirect()->route('admin.kontak.index'))->name('contact.faq.index');
+    Route::get('/contact/faq/create', fn() => redirect()->route('admin.kontak.index'))->name('contact.faq.create');
+    Route::get('/contact/faq/{faq}/edit', fn() => redirect()->route('admin.kontak.index'))->name('contact.faq.edit');
+    Route::get('/contact/social-media', fn() => redirect()->route('admin.sosmed.index'))->name('contact.social-media.index');
+    Route::get('/contact/social-media/create', fn() => redirect()->route('admin.sosmed.index'))->name('contact.social-media.create');
+    Route::get('/contact/social-media/{social_media}/edit', fn() => redirect()->route('admin.sosmed.index'))->name('contact.social-media.edit');
 
     // ---- KONTAK CMS (baru) ----
     Route::get('/kontak', [KontakAdminController::class, 'index'])->name('kontak.index');
@@ -193,7 +196,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::patch('/sosmed/{sosmed}/toggle', [SosmedAdminController::class, 'toggle'])->name('sosmed.toggle');
 
     // ---- TESTIMONI ----
-    Route::resource('testimonials', TestimonialAdminController::class);
+    Route::resource('testimonials', TestimonialAdminController::class)->except(['show']);
     Route::patch('/testimonials/{testimonial}/toggle-active', [TestimonialAdminController::class, 'toggleActive'])->name('testimonials.toggle-active');
     Route::patch('/testimonials/{testimonial}/toggle-featured', [TestimonialAdminController::class, 'toggleFeatured'])->name('testimonials.toggle-featured');
 
@@ -209,11 +212,11 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // ---- REGISTER / PENDAFTARAN LEGACY ----
     Route::get('/register/hero', [RegisterHeroSettingController::class, 'index'])->name('register.hero.index');
     Route::put('/register/hero', [RegisterHeroSettingController::class, 'update'])->name('register.hero.update');
-    Route::resource('register/benefits', RegisterBenefitController::class)
-        ->except(['show'])
-        ->names('register.benefits');
-    Route::get('/register/form-setting', [RegisterFormSettingController::class, 'index'])->name('register.form-setting.index');
-    Route::put('/register/form-setting', [RegisterFormSettingController::class, 'update'])->name('register.form-setting.update');
+    Route::get('/register/benefits', fn() => redirect()->route('admin.register.hero.index'))->name('register.benefits.index');
+    Route::get('/register/benefits/create', fn() => redirect()->route('admin.register.hero.index'))->name('register.benefits.create');
+    Route::get('/register/benefits/{benefit}/edit', fn() => redirect()->route('admin.register.hero.index'))->name('register.benefits.edit');
+    Route::get('/register/form-setting', fn() => redirect()->route('admin.register.hero.index'))->name('register.form-setting.index');
+    Route::put('/register/form-setting', fn() => redirect()->route('admin.register.hero.index'))->name('register.form-setting.update');
     Route::resource('register/registrations', RegistrationController::class)
         ->except(['create', 'store'])
         ->names('register.registrations');

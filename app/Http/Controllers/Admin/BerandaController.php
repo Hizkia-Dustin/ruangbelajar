@@ -326,4 +326,26 @@ class BerandaController extends Controller
             ->back()
             ->with('success', "✅ Card program \"{$card->title}\" berhasil {$status}!");
     }
+
+    // ==========================================
+    // WHATSAPP FLOATING CMS
+    // ==========================================
+
+    public function updateWhatsappFloating(Request $request)
+    {
+        $request->validate([
+            'wa_floating_number' => 'required|string|max:50',
+            'wa_floating_message' => 'nullable|string|max:1000',
+        ], [
+            'wa_floating_number.required' => 'Nomor WhatsApp wajib diisi.',
+        ]);
+
+        \App\Models\Setting::set('wa_floating_number', $request->wa_floating_number, 'whatsapp_floating');
+        \App\Models\Setting::set('wa_floating_message', $request->wa_floating_message ?? '', 'whatsapp_floating');
+        \App\Models\Setting::set('wa_floating_status', $request->boolean('wa_floating_status') ? '1' : '0', 'whatsapp_floating');
+
+        return redirect()
+            ->route('admin.beranda.index', '#whatsapp-floating')
+            ->with('success', '✅ Pengaturan WhatsApp Floating berhasil diperbarui!');
+    }
 }

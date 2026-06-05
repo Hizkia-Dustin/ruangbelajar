@@ -300,12 +300,28 @@ $bodyScript   = Setting::get('custom_body_script');
     </footer>
 
     {{-- Floating WhatsApp Button (dinamis) --}}
-    <a href="https://wa.me/{{ preg_replace('/\D/','',$footerWa) }}"
+    @php
+        $waFloatingStatus = \App\Models\Setting::get('wa_floating_status', '1');
+        $waFloatingNumRaw = \App\Models\Setting::get('wa_floating_number', $footerWa);
+        $waFloatingNum = preg_replace('/\D/', '', $waFloatingNumRaw);
+        if (str_starts_with($waFloatingNum, '0')) {
+            $waFloatingNum = '62' . substr($waFloatingNum, 1);
+        }
+        $waFloatingMsg = \App\Models\Setting::get('wa_floating_message', '');
+        $waFloatingUrl = "https://wa.me/" . $waFloatingNum;
+        if (!empty($waFloatingMsg)) {
+            $waFloatingUrl .= "?text=" . urlencode($waFloatingMsg);
+        }
+    @endphp
+
+    @if($waFloatingStatus == '1')
+    <a href="{{ $waFloatingUrl }}"
        target="_blank"
        class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg shadow-green-500/40 flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-95"
        title="Chat WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+    @endif
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
