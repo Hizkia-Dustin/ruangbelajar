@@ -1,0 +1,16 @@
+# Jalankan setelah repo di-clone dan .env produksi diisi di DOM Cloud.
+root: public_html/public
+features:
+  - php 8.3
+  - node 24
+  - mysql
+  - ssl always
+nginx:
+  fastcgi: "on"
+  locations:
+    - match: /
+      try_files: $uri $uri/ /index.php$is_args$args
+    - match: ~ \.[^\/]+(?<!\.php)$
+      try_files: $uri =404
+commands:
+  - bash deploy/release.sh

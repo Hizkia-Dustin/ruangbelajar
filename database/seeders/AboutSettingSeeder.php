@@ -10,7 +10,7 @@ class AboutSettingSeeder extends Seeder
 {
     public function run(): void
     {
-        AboutSetting::create([
+        AboutSetting::updateOrCreate(['id' => 1], [
             'badge_text'          => 'Legacy & Vision',
             'title'               => 'Membangun Masa Depan',
             'highlighted_title'   => 'Bersama Kami.',
@@ -29,7 +29,7 @@ class AboutSettingSeeder extends Seeder
         ];
 
         foreach ($approaches as $data) {
-            AboutApproach::create(array_merge($data, ['type' => 'approach', 'is_active' => true, 'text' => $data['title']]));
+            AboutApproach::updateOrCreate(['type' => 'approach', 'title' => $data['title']], array_merge($data, ['is_active' => true, 'text' => $data['title']]));
         }
 
         $this->command->info('✅ AboutSettingSeeder berhasil!');

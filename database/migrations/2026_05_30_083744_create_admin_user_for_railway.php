@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Hash;
 return new class extends Migration {
     public function up(): void
     {
+        if (! app()->environment('local', 'testing')) {
+            return;
+        }
+
         DB::table('users')->updateOrInsert(
             ['email' => 'admin@ruangbelajar.id'],
             [

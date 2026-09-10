@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Testimonial;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class TestimonialSeeder extends Seeder
 {
@@ -13,11 +12,6 @@ class TestimonialSeeder extends Seeder
      */
     public function run(): void
     {
-        // Truncate existing testimonials to avoid duplicates and clean old structure
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Testimonial::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
         $testimonials = [
             // Home (2 items)
             [
@@ -93,7 +87,11 @@ class TestimonialSeeder extends Seeder
         ];
 
         foreach ($testimonials as $data) {
-            Testimonial::create($data);
+            $location = $data['display_location'];
+            unset($data['display_location']);
+            $data['tampil_di_beranda'] = in_array($location, ['home', 'both'], true);
+            $data['tampil_di_tentang'] = in_array($location, ['about', 'both'], true);
+            Testimonial::updateOrCreate(['name' => $data['name'], 'role' => $data['role']], $data);
         }
     }
 }
