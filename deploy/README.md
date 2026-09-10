@@ -1,6 +1,6 @@
 # Deploy Ruang Belajar ke DOM Cloud
 
-Repo: https://github.com/hafidzh958/ruangbelajar (branch `main`).
+Repo: https://github.com/Hizkia-Dustin/ruangbelajar (branch `main`).
 
 ## Instalasi pertama
 
