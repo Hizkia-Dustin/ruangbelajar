@@ -11,6 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Percayai proxy Railway / Cloudflare agar request HTTPS terdeteksi
+        $middleware->trustProxies(at: '*');
+
         // Alias middleware untuk proteksi halaman admin
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureAdmin::class,
